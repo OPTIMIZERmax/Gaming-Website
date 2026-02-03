@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ULTIMATE ARCADE | Play & Share</title>
+    <title>ULTIMATE ARCADE | Play Free Games</title>
     <style>
+        /* CSS VARIABLES - Handles Dark/Light Mode */
         :root {
             --bg: #0d1117;
             --card-bg: #161b22;
             --text: #ffffff;
             --neon: #00d4ff;
             --accent: #39ff14;
+            --header-overlay: rgba(0,0,0,0.8);
         }
 
         [data-theme="light"] {
@@ -19,35 +21,41 @@
             --text: #1c1e21;
             --neon: #007bff;
             --accent: #28a745;
+            --header-overlay: rgba(0,0,0,0.4);
         }
 
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
             margin: 0;
-            transition: 0.3s;
+            transition: 0.3s ease;
+            line-height: 1.6;
         }
 
-        /* THEME & SHARE CONTROLS */
-        .top-controls {
+        /* TOP NAVIGATION CONTROLS */
+        .top-nav {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 0;
+            width: 100%;
             display: flex;
+            justify-content: flex-end;
             align-items: center;
+            padding: 15px 20px;
             gap: 15px;
             z-index: 1000;
+            box-sizing: border-box;
         }
 
         .share-btn {
             background: var(--neon);
+            color: #000;
             border: none;
-            padding: 8px 15px;
+            padding: 8px 16px;
             border-radius: 20px;
             font-weight: bold;
             cursor: pointer;
-            color: #000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         .theme-switch {
@@ -74,99 +82,196 @@
         input:checked + .slider { background-color: var(--accent); }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        /* CONTENT */
+        /* HEADER */
         header {
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1350&q=80');
-            background-size: cover; padding: 60px 20px; text-align: center;
+            background: linear-gradient(var(--header-overlay), var(--header-overlay)), 
+                        url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--neon);
         }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        header h1 { font-size: 3.5rem; margin: 0; text-shadow: 0 0 15px var(--neon); letter-spacing: 3px; }
 
-        .game-card {
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+
+        /* LEADERBOARD */
+        .hall-of-fame {
             background: var(--card-bg);
-            border: 2px solid var(--neon);
-            border-radius: 15px;
+            border: 2px dashed var(--neon);
             padding: 20px;
-            margin-bottom: 30px;
+            border-radius: 15px;
+            margin-bottom: 50px;
             text-align: center;
         }
 
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { color: var(--neon); padding: 10px; border-bottom: 2px solid #333; }
+        td { padding: 10px; border-bottom: 1px solid #333; }
+
+        /* GAME CARDS */
+        .game-card {
+            background: var(--card-bg);
+            border: 2px solid var(--neon);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .game-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+
         .game-window {
-            position: relative; padding-top: 56.25%; height: 0;
-            overflow: hidden; border-radius: 10px; background: #000;
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #000;
         }
 
-        .game-window iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-
-        .btn-group { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
-
-        button {
-            padding: 12px 25px; border-radius: 8px; font-weight: bold;
-            cursor: pointer; border: none; transition: 0.2s;
+        .game-window iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
         }
 
-        .full-btn { background: var(--neon); color: #000; }
-        .full-btn:hover { transform: scale(1.05); }
+        .full-btn {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            transition: 0.3s;
+        }
 
-        #contact { background: var(--card-bg); padding: 40px 20px; border-top: 4px solid var(--accent); text-align: center; }
-        input, textarea { width: 90%; max-width: 400px; margin: 10px 0; padding: 12px; border-radius: 8px; border: 1px solid #ccc; }
+        .full-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+        /* CONTACT FORM */
+        #contact {
+            background: var(--card-bg);
+            padding: 60px 20px;
+            border-top: 5px solid var(--accent);
+            text-align: center;
+        }
+
+        form { max-width: 500px; margin: 30px auto; display: grid; gap: 15px; }
+
+        input, textarea {
+            background: var(--bg);
+            border: 1px solid #444;
+            color: var(--text);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .submit-btn { background: var(--accent); color: #000; cursor: pointer; border: none; font-weight: bold; font-size: 1.1rem; }
+
+        footer { padding: 20px; text-align: center; font-size: 0.8rem; opacity: 0.6; }
     </style>
 </head>
 <body>
 
-    <div class="top-controls">
-        <button class="share-btn" onclick="shareSite()">🔗 SHARE</button>
-        <label class="theme-switch">
-            <input type="checkbox" id="theme-toggle" />
+    <div class="top-nav">
+        <button class="share-btn" onclick="shareSite()">🔗 SHARE SITE</button>
+        <label class="theme-switch" title="Toggle Light/Dark Mode">
+            <input type="checkbox" id="mode-toggle" />
             <div class="slider"></div>
         </label>
     </div>
 
     <header>
-        <h1 style="color: white; letter-spacing: 5px;">ULTIMATE ARCADE</h1>
+        <h1 style="color: white;">ULTIMATE ARCADE</h1>
+        <p style="color: white; opacity: 0.9;">High Octane Web Gaming</p>
     </header>
 
     <div class="container">
-        <div class="game-card">
-            <h2>Super Drift Racing</h2>
-            <div class="game-window" id="game1">
-                <iframe src="https://html5.gamedistribution.com/f04746f387534444983088f692039912/" allowfullscreen="true"></iframe>
-            </div>
-            <div class="btn-group">
-                <button class="full-btn" onclick="document.getElementById('game1').requestFullscreen()">ARCADE MODE</button>
-            </div>
+        
+        <div class="hall-of-fame">
+            <h2>🏆 HALL OF FAME</h2>
+            <table>
+                <thead>
+                    <tr><th>Player</th><th>Game</th><th>Score</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Admin</td><td>Super Drift</td><td>99,999</td></tr>
+                    <tr><td>Gamer1</td><td>Combat</td><td>15,200</td></tr>
+                </tbody>
+            </table>
         </div>
+
+        <div class="game-card">
+            <div class="game-title-row">
+                <h3>Super Drift Racing</h3>
+                <span style="color: var(--neon)">RACING</span>
+            </div>
+            <div class="game-window" id="game-race">
+                <iframe 
+                    src="https://html5.gamedistribution.com/f04746f387534444983088f692039912/" 
+                    allow="autoplay; fullscreen; keyboard" 
+                    sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-pointer-lock"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <button class="full-btn" onclick="goFullscreen('game-race')">ENTER FULLSCREEN MODE</button>
+        </div>
+
     </div>
 
     <section id="contact">
-        <h2>Submit Your Score</h2>
-        <form action="https://formspree.io/f/xbdkvbon" method="POST">
-            <input type="text" name="name" placeholder="Gamer ID" required><br>
-            <input type="text" name="score" placeholder="Game & Score" required><br>
-            <textarea name="message" placeholder="Message" required></textarea><br>
-            <button type="submit" style="background: var(--accent); color: #000;">SEND SCORE</button>
-        </form>
+        <div class="container">
+            <h2>Submit Your High Score</h2>
+            <p>Send a message with your score and game title to be added to the leaderboard!</p>
+            <form action="https://formspree.io/f/xbdkvbon" method="POST">
+                <input type="text" name="name" placeholder="Gamer ID" required>
+                <input type="text" name="game_score" placeholder="Game Name & Score" required>
+                <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+                <button type="submit" class="submit-btn">SEND TRANSMISSION</button>
+            </form>
+        </div>
     </section>
 
+    <footer>
+        &copy; 2026 Ultimate Arcade | Powered by Cloudflare Pages
+    </footer>
+
     <script>
-        // THEME TOGGLE LOGIC
-        const toggle = document.querySelector('#theme-toggle');
-        toggle.addEventListener('change', (e) => {
-            document.documentElement.setAttribute('data-theme', e.target.checked ? 'light' : 'dark');
+        // 1. Theme Switcher Logic
+        const modeToggle = document.querySelector('#mode-toggle');
+        modeToggle.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
         });
 
-        // SHARE LOGIC
+        // 2. Fullscreen Logic
+        function goFullscreen(id) {
+            const elem = document.getElementById(id);
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            }
+        }
+
+        // 3. Share Logic
         function shareSite() {
             if (navigator.share) {
                 navigator.share({
                     title: 'Ultimate Arcade',
-                    text: 'Check out this free gaming arcade!',
+                    text: 'Play free browser games here!',
                     url: window.location.href
-                }).catch(console.error);
+                });
             } else {
-                // Fallback: Copy to clipboard
                 navigator.clipboard.writeText(window.location.href);
-                alert("Link copied to clipboard! Share it with your friends.");
+                alert("Website link copied to clipboard!");
             }
         }
     </script>
