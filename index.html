@@ -3,98 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Arcade | Minecraft Edition</title>
+    <title>Neon Arcade</title>
     <style>
-        :root { --neon: #39ff14; --bg: #0d1117; --panel: #161b22; }
-        body { background-color: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        
-        header { padding: 15px; background: var(--panel); border-bottom: 3px solid var(--neon); text-align: center; }
-        
-        .status-bar { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.8rem; margin-top: 5px; }
-        #light { width: 10px; height: 10px; background: red; border-radius: 50%; box-shadow: 0 0 8px red; transition: 0.3s; }
-
-        .main-layout { display: flex; flex: 1; overflow: hidden; }
-
-        .sidebar { width: 220px; background: #0a0a0c; border-right: 1px solid #333; padding: 15px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
-        .game-btn { background: #222; color: #ccc; border: 1px solid #444; padding: 12px; cursor: pointer; text-align: left; border-radius: 4px; transition: 0.2s; font-size: 0.9rem; }
-        .game-btn:hover { background: #333; color: var(--neon); border-color: var(--neon); }
-        .active-game { border-color: var(--neon); color: var(--neon); background: #161b22; box-shadow: inset 0 0 10px rgba(57, 255, 20, 0.1); }
-
-        .game-display { flex: 1; display: flex; flex-direction: column; background: #000; position: relative; }
+        :root { --neon: #39ff14; --bg: #0d1117; }
+        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        header { padding: 10px; background: #161b22; border-bottom: 2px solid var(--neon); text-align: center; }
+        .main { display: flex; flex: 1; }
+        .sidebar { width: 200px; background: #000; padding: 15px; border-right: 1px solid #333; display: flex; flex-direction: column; gap: 10px; }
+        .btn { background: #222; color: #ccc; border: 1px solid #444; padding: 10px; cursor: pointer; border-radius: 4px; }
+        .btn:hover { color: var(--neon); border-color: var(--neon); }
+        .game-area { flex: 1; background: #000; position: relative; }
         iframe { width: 100%; height: 100%; border: none; }
-
-        .controls { padding: 10px; background: var(--panel); display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #333; }
-        .fs-btn { background: var(--neon); color: black; border: none; padding: 8px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; }
-        .fs-btn:hover { background: white; }
+        #status { font-size: 12px; color: var(--neon); margin-top: 5px; }
     </style>
 </head>
 <body>
-
     <header>
-        <h1 style="margin:0; font-size: 1.5rem; letter-spacing: 2px;">NEON ARCADE</h1>
-        <div class="status-bar">
-            <div id="light"></div>
-            <span id="stat-text">INITIALIZING ENGINE...</span>
-        </div>
+        <h2 style="margin:0">NEON ARCADE</h2>
+        <div id="status">● SYSTEM READY</div>
     </header>
-
-    <div class="main-layout">
+    <div class="main">
         <div class="sidebar">
-            <div style="font-size: 0.7rem; color: #666; margin-bottom: 5px; letter-spacing: 1px;">LIBRARY</div>
-            <button class="game-btn active-game" onclick="loadGame('eagler', this)">Minecraft (Eaglercraft)</button>
-            <button class="game-btn" onclick="loadGame('drift', this)">Drift Hunters</button>
-            <button class="game-btn" onclick="loadGame('slope', this)">Slope</button>
-            <button class="game-btn" onclick="loadGame('drivemad', this)">Drive Mad</button>
-            <button class="game-btn" onclick="loadGame('flappy', this)">Flappy Bird</button>
+            <button class="btn" onclick="load('mc')">Minecraft</button>
+            <button class="btn" onclick="load('drift')">Drift Hunters</button>
+            <button class="btn" onclick="load('slope')">Slope</button>
         </div>
-
-        <div class="game-display">
-            <iframe id="arcade-iframe" src="https://eaglercraft.com/mc/1.8.8/" allowfullscreen sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-forms"></iframe>
-            
-            <div class="controls">
-                <span id="game-title" style="font-weight: bold; color: var(--neon);">Minecraft 1.8.8</span>
-                <button class="fs-btn" onclick="goFullscreen()">GO FULLSCREEN</button>
-            </div>
+        <div class="game-area">
+            <iframe id="frame" src="https://v-6.eaglercraft.com/mc/1.8.8/" allowfullscreen></iframe>
         </div>
     </div>
-
     <script>
- const games = {
-    // Verified 2026 Eaglercraft Mirror (Unblocked for Embedding)
-    eagler: { name: "Minecraft 1.8.8", url: "https://shhnowisnottheti.me/mc/1.8.8/" }, 
-    drift: { name: "Drift Hunters", url: "https://geometry-dash-free.github.io/drift-hunters/" },
-    slope: { name: "Slope", url: "https://testing-slope.github.io/" },
-    drivemad: { name: "Drive Mad", url: "https://micro-games.github.io/drive-mad/" },
-    flappy: { name: "Flappy Bird", url: "https://mxm7.github.io/flappybird/" }
-};
-
-        const iframe = document.getElementById('arcade-iframe');
-        const light = document.getElementById('light');
-        const statText = document.getElementById('stat-text');
-        const titleText = document.getElementById('game-title');
-
-        function loadGame(id, btn) {
-            light.style.background = 'red';
-            light.style.boxShadow = '0 0 8px red';
-            statText.innerText = 'FETCHING ASSETS...';
-
-            iframe.src = games[id].url;
-            titleText.innerText = games[id].name;
-
-            document.querySelectorAll('.game-btn').forEach(b => b.classList.remove('active-game'));
-            btn.classList.add('active-game');
-        }
-
-        iframe.onload = () => {
-            light.style.background = '#39ff14';
-            light.style.boxShadow = '0 0 8px #39ff14';
-            statText.innerText = 'SYSTEM READY';
+        const urls = {
+            mc: "https://v-6.eaglercraft.com/mc/1.8.8/",
+            drift: "https://geometry-dash-free.github.io/drift-hunters/",
+            slope: "https://testing-slope.github.io/"
         };
-
-        function goFullscreen() {
-            if (iframe.requestFullscreen) iframe.requestFullscreen();
-            else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
-        }
+        function load(id) { document.getElementById('frame').src = urls[id]; }
     </script>
 </body>
 </html>
