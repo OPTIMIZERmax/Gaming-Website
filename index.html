@@ -5,45 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arcade Portal | Racing</title>
     <style>
-        body { background: #0b0e14; color: white; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; }
-        .header { padding: 30px; background: #161b22; border-bottom: 3px solid #00d4ff; }
-        .game-container { max-width: 960px; margin: 40px auto; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); }
-        .iframe-wrapper { position: relative; padding-top: 56.25%; height: 0; }
-        .iframe-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-        .controls { padding: 20px; background: #1c2128; display: flex; justify-content: space-around; }
-        .btn { background: #39ff14; color: black; padding: 12px 24px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
-        #contact { background: #161b22; padding: 60px 20px; border-top: 3px solid #39ff14; }
-        input, textarea { background: #0d1117; color: white; border: 1px solid #30363d; padding: 12px; width: 90%; max-width: 400px; margin: 8px 0; border-radius: 4px; }
+        /* Gaming Theme */
+        body { background: #0a0a0c; color: #00d4ff; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; }
+        header { padding: 40px; background: #161b22; border-bottom: 4px solid #00d4ff; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        h1 { margin: 0; font-size: 2.5rem; text-transform: uppercase; letter-spacing: 4px; }
+        
+        /* Game Display */
+        .game-card { max-width: 960px; margin: 40px auto; background: #111; border: 2px solid #333; border-radius: 15px; overflow: hidden; }
+        .iframe-container { position: relative; padding-top: 56.25%; height: 0; background: #000; }
+        .iframe-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        
+        /* Controls */
+        .arcade-bar { padding: 20px; background: #1c2128; display: flex; justify-content: center; gap: 20px; }
+        .btn { background: #00d4ff; color: #000; padding: 12px 30px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn:hover { background: #fff; transform: scale(1.05); }
+
+        /* Contact Section */
+        #contact { padding: 60px 20px; background: #111; border-top: 4px solid #39ff14; }
+        input, textarea { width: 90%; max-width: 400px; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #333; background: #050505; color: white; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>NEON RACING ARCADE</h1>
-    </div>
+    <header>
+        <h1>ULTIMATE ARCADE</h1>
+        <p style="color: #888;">Hardware: PC Detected | No Adblock Required</p>
+    </header>
 
-    <div class="game-container">
-        <div class="iframe-wrapper">
+    <div class="game-card">
+        <div class="iframe-container">
             <iframe 
-                src="https://www.gameflare.com/embed/extreme-drift/" 
-                allowfullscreen="true" 
-                scrolling="no" 
-                allow="autoplay; fullscreen; keyboard"
-                sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-pointer-lock">
+                src="https://geometry-dash-free.github.io/drift-hunters/" 
+                allow="autoplay; fullscreen; keyboard" 
+                sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-pointer-lock"
+                allowfullscreen>
             </iframe>
         </div>
-        <div class="controls">
-            <button class="btn" onclick="document.querySelector('iframe').requestFullscreen()">Arcade Mode (Full)</button>
+        <div class="arcade-bar">
+            <button class="btn" onclick="document.querySelector('iframe').requestFullscreen()">ARCADE MODE (FULLSCREEN)</button>
         </div>
     </div>
 
     <section id="contact">
-        <h2>Contact Me</h2>
+        <h2 style="color: #39ff14;">Submit High Score</h2>
         <form action="https://formspree.io/f/xbdkvbon" method="POST">
             <input type="text" name="name" placeholder="Gamer ID" required><br>
-            <input type="email" name="email" placeholder="Email" required><br>
-            <textarea name="message" rows="4" placeholder="Request a game or report a bug" required></textarea><br>
-            <button type="submit" class="btn">Send Transmission</button>
+            <textarea name="message" rows="3" placeholder="Tell me your score!" required></textarea><br>
+            <button type="submit" class="btn" style="background: #39ff14;">SEND SCORE</button>
         </form>
     </section>
 
